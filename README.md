@@ -1,9 +1,4 @@
-//
-//  README.me
-//  JooycarMobilitySDKPackage
-//
-//  Created by Kimberlly Florez on 15/3/2026.
-//
+
 
 # SDK para trackeo y monitoreo de viajes en vehículo dentro de aplicaciones iOS.
 
@@ -59,7 +54,7 @@ Debe ejecutarse una vez al iniciar la aplicación.
 
 * Env: Ambiente donde operará el SDK
 
-```swift
+``` swift
 
 let config = InitConfig(
     env: .QA
