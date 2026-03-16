@@ -50,7 +50,7 @@ Inicializa el SDK y configura el entorno donde se ejecutará.
 
 Debe ejecutarse una vez al iniciar la aplicación.
 
-###Parametros
+### Parametros
 
 * Env: Ambiente donde operará el SDK
 
@@ -67,10 +67,12 @@ enum Env {
     case PROD
     case QA
 }
+
 ```
 
 let result = await JooycarMobility.shared.initialize(config: config)
 
+``` swift
 switch result {
 case .success:
     print("SDK initialized successfully")
