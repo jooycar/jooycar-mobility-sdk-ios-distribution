@@ -39,7 +39,7 @@ Ir a:
 ### 2. Autenticar usuario
 ### 3. Iniciar monitoreo de viajes
 
-###1. Inicializar SDK
+### 1. Inicializar SDK
 
 ``` swift
 
@@ -90,14 +90,14 @@ El metodo retorna:
 
 SDKResult puede ser success o failure, en caso de ser failure se indicara el motivo.
 
-###2. Autenticar usuario
+### 2. Autenticar usuario
 
 login(credentials:)
     
 Autentica al usuario junto con la información asociada al vehículo y dirección.
 
 
-###Parametros
+### Parametros
 
 * token de autenticación
 * información de la persona
@@ -116,7 +116,7 @@ let credentials = LoginData(
 let loginResult = await JooycarMobility.shared.login(credentials: credentials)
 ```
 
-En donde 
+En donde: 
 #### Token: String
 
 #### Person:
@@ -180,7 +180,7 @@ let vehicle = Vehicle(
 
 El metodo retorna:
 
-```swift
+``` swift
 
     SDKResult
 ```
