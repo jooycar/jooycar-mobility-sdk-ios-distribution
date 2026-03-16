@@ -35,9 +35,9 @@ Ir a:
 
 ## Flujo uso recomendado
 
-## 1. Inicializar SDK
-## 2. Autenticar usuario
-## 3. Iniciar monitoreo de viajes
+### 1. Inicializar SDK
+### 2. Autenticar usuario
+### 3. Iniciar monitoreo de viajes
 
 ###1. Inicializar SDK
 
