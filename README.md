@@ -5,7 +5,7 @@
 //  Created by Kimberlly Florez on 15/3/2026.
 //
 
-SDK para trackeo y monitoreo de viajes en vehículo dentro de aplicaciones iOS.
+#SDK para trackeo y monitoreo de viajes en vehículo dentro de aplicaciones iOS.
 
 El SDK permite inicializar el servicio, autenticar al usuario y comenzar el monitoreo de conducción, gestionando internamente validaciones y permisos del dispositivo.
 
@@ -29,7 +29,7 @@ El SDK se distribuye mediante Swift Package Manager.
 
 Ir a:
 
-```swift
+``` swift
   File → Add Package Dependency
 ```
 3. Ingresa a la URL del repositorio
