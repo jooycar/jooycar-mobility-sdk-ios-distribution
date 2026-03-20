@@ -10,14 +10,22 @@ let package = Package(
     products: [
         .library(
             name: "JooycarMobilitySDK",
-            targets: ["JooycarMobilitySDK"]
+            targets: ["JooycarMobilitySDKWrapper"]
         ),
     ],
     targets: [
         .binaryTarget(
             name: "JooycarMobilitySDK",
-            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.0.0-beta2.xcframework.zip",
-            checksum: "7745e128895dc602fc1717f4a9f437e836f8dc0e1c12522d1acc717a0fc65434"
+            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.0.0-beta3.xcframework.zip",
+            checksum: "8e3f59b002718d7c9d68246d790bc8acf96e3de4f7ecb577d5ed2e43eb21b49e"
+        )
+        .target(
+            name: "JooycarMobilitySDKWrapper",
+            dependencies: [
+                "JooycarMobilitySDK",
+                .product(name: "DriveKit", package: "drivekit.spm")
+            ],
+
         )
     ]
 )
