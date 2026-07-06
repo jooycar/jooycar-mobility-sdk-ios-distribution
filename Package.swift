@@ -15,10 +15,8 @@ let package = Package(
     ],
     dependencies: [
         .package(id: "drivekit.spm", exact: "3.9.0"),
-        .package(url: "https://github.com/amplitude/Amplitude-Swift.git", from: "1.18.1"),
-        .package(url: "https://github.com/amplitude/AmplitudeSessionReplay-iOS.git", from: "0.10.0"),
-        // Pineado a 1.3.0: la 1.3.1 dispara un bug del verificador de .swiftinterface
-        // con Swift 6.2/Xcode 26.1 al hacer archive con BUILD_LIBRARY_FOR_DISTRIBUTION=YES.
+        .package(url: "https://github.com/amplitude/Amplitude-Swift.git", exact: "1.18.1"),
+        .package(url: "https://github.com/amplitude/AmplitudeSessionReplay-iOS.git", exact: "0.10.0"),
         .package(url: "https://github.com/amplitude/analytics-connector-ios.git", exact: "1.3.0"),
     ],
     targets: [
