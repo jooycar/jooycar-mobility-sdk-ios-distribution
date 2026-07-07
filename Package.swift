@@ -18,12 +18,16 @@ let package = Package(
         .package(url: "https://github.com/amplitude/Amplitude-Swift.git", exact: "1.18.1"),
         .package(url: "https://github.com/amplitude/AmplitudeSessionReplay-iOS.git", exact: "0.10.0"),
         .package(url: "https://github.com/amplitude/analytics-connector-ios.git", exact: "1.3.0"),
+        // Render de imágenes universales (JooycarImageView, desde 1.0.3):
+        // Lottie para animaciones JSON/.lottie y SVGView para vectores.
+        .package(url: "https://github.com/airbnb/lottie-ios.git", exact: "4.6.1"),
+        .package(url: "https://github.com/exyte/SVGView.git", exact: "1.0.6"),
     ],
     targets: [
         .binaryTarget(
             name: "JooycarMobilitySDK",
-            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.0.0-beta26.xcframework.zip",
-            checksum: "15837d018f85f3088e27b6ff6ce082631926f334f3d5e02884fe37dcbaae958a"
+            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.0.3.xcframework.zip",
+            checksum: "77ccc632d3fe8b6b1c4df5a9567d2bb281c14582f8a49e00871b7bc6865fd5a5"
         ),
         .target(
             name: "JooycarMobilitySDKDependencyWrapper",
@@ -32,6 +36,8 @@ let package = Package(
                 .product(name: "AmplitudeSwift", package: "Amplitude-Swift"),
                 .product(name: "AmplitudeSessionReplay", package: "AmplitudeSessionReplay-iOS"),
                 .product(name: "AmplitudeSwiftSessionReplayPlugin", package: "AmplitudeSessionReplay-iOS"),
+                .product(name: "Lottie", package: "lottie-ios"),
+                .product(name: "SVGView", package: "SVGView"),
                 .target(name: "JooycarMobilitySDK"),
             ],
             path: "Sources/JooycarMobilitySDKDependencyWrapper"
