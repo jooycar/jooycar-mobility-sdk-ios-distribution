@@ -17,6 +17,9 @@ let package = Package(
         .package(id: "drivekit.spm", exact: "3.9.0"),
         .package(url: "https://github.com/amplitude/Amplitude-Swift.git", exact: "1.18.1"),
         .package(url: "https://github.com/amplitude/AmplitudeSessionReplay-iOS.git", exact: "0.10.0"),
+        // Pineado a 1.3.0: la 1.3.1 rompe con Swift 6.2/Xcode 26.1 (verificador de
+        // .swiftinterface, módulo AnalyticsConnector). El wrapper consume su producto
+        // (abajo) para que este exact NO se pode y ate la versión en todo el grafo.
         .package(url: "https://github.com/amplitude/analytics-connector-ios.git", exact: "1.3.0"),
         // Render de imágenes universales (JooycarImageView, desde 1.0.3):
         // Lottie para animaciones JSON/.lottie y SVGView para vectores.
@@ -36,6 +39,7 @@ let package = Package(
                 .product(name: "AmplitudeSwift", package: "Amplitude-Swift"),
                 .product(name: "AmplitudeSessionReplay", package: "AmplitudeSessionReplay-iOS"),
                 .product(name: "AmplitudeSwiftSessionReplayPlugin", package: "AmplitudeSessionReplay-iOS"),
+                .product(name: "AnalyticsConnector", package: "analytics-connector-ios"),
                 .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "SVGView", package: "SVGView"),
                 .target(name: "JooycarMobilitySDK"),
