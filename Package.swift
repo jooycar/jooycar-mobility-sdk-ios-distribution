@@ -36,6 +36,7 @@ let package = Package(
                 .product(name: "AmplitudeSwift", package: "Amplitude-Swift"),
                 .product(name: "AmplitudeSessionReplay", package: "AmplitudeSessionReplay-iOS"),
                 .product(name: "AmplitudeSwiftSessionReplayPlugin", package: "AmplitudeSessionReplay-iOS"),
+                .product(name: "AnalyticsConnector", package: "analytics-connector-ios"),
                 .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "SVGView", package: "SVGView"),
                 .target(name: "JooycarMobilitySDK"),
