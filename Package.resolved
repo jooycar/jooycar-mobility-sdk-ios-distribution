@@ -1,5 +1,5 @@
 {
-  "originHash" : "8ac7a4729a5ff372978d798b88126c822649f0148680e1f33800c45b06be065f",
+  "originHash" : "7cebbd05e522d637df6f9cfa1a2a1ebfdf6345c492cbccd8e11770661e0ca8cd",
   "pins" : [
     {
       "identity" : "amplitude-ios",
@@ -105,6 +105,15 @@
       }
     },
     {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "revision" : "f4db77d7feacba0c2360b84a40c38a6ce8ff399d",
+        "version" : "4.6.1"
+      }
+    },
+    {
       "identity" : "nordicdfu.spm",
       "kind" : "registry",
       "location" : "",
@@ -143,6 +152,15 @@
       "state" : {
         "revision" : "24867f3e4ac62027db9827112135e6531b6f4051",
         "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "svgview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/SVGView.git",
+      "state" : {
+        "revision" : "6465962facdd25cb96eaebc35603afa2f15d2c0d",
+        "version" : "1.0.6"
       }
     },
     {
