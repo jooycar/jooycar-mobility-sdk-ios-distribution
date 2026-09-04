@@ -26,8 +26,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "JooycarMobilitySDK",
-            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.0.18.xcframework.zip",
-            checksum: "827a6e7b281c963dcd920b38d37c9eca282eadc3da061cb6fc7049aea873fbab"
+            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.0.19.xcframework.zip",
+            checksum: "bd441bca43e7964dea33deeabc9efd845df9f700eb1849018127f4ba64090737"
         ),
         .target(
             name: "JooycarMobilitySDKDependencyWrapper",
