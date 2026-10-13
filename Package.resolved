@@ -1,5 +1,5 @@
 {
-  "originHash" : "7cebbd05e522d637df6f9cfa1a2a1ebfdf6345c492cbccd8e11770661e0ca8cd",
+  "originHash" : "7a5aed8dc60ba8c0899ede3a58f17fea48b9aeb117dbd3f1b90541dbfb660a6c",
   "pins" : [
     {
       "identity" : "amplitude-ios",
@@ -60,7 +60,7 @@
       "kind" : "registry",
       "location" : "",
       "state" : {
-        "version" : "3.9.0"
+        "version" : "3.9.4"
       }
     },
     {
@@ -84,7 +84,7 @@
       "kind" : "registry",
       "location" : "",
       "state" : {
-        "version" : "3.1.7"
+        "version" : "3.1.8"
       }
     },
     {
@@ -126,7 +126,7 @@
       "kind" : "registry",
       "location" : "",
       "state" : {
-        "version" : "1.6.11"
+        "version" : "1.6.12"
       }
     },
     {
@@ -134,7 +134,7 @@
       "kind" : "registry",
       "location" : "",
       "state" : {
-        "version" : "17.0.3"
+        "version" : "17.0.5"
       }
     },
     {
@@ -142,7 +142,7 @@
       "kind" : "registry",
       "location" : "",
       "state" : {
-        "version" : "1.12.2"
+        "version" : "1.12.3"
       }
     },
     {
