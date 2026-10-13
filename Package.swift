@@ -14,7 +14,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(id: "drivekit.spm", exact: "3.9.0"),
+        .package(id: "drivekit.spm", exact: "3.9.4"),
         .package(url: "https://github.com/amplitude/Amplitude-Swift.git", exact: "1.18.1"),
         .package(url: "https://github.com/amplitude/AmplitudeSessionReplay-iOS.git", exact: "0.10.0"),
         .package(url: "https://github.com/amplitude/analytics-connector-ios.git", exact: "1.3.0"),
