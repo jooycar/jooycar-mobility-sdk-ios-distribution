@@ -44,13 +44,12 @@ let package = Package(
         .binaryTarget(
             name: "OctoProvider",
             url: "https://mobility-sdk.jooycar.net/ios/OctoProvider-1.2.0.xcframework.zip",
-            checksum: "572096734ddbc78d7c435a77dedec814cf2d60a942032cd10632578c945b9edb"
+            checksum: "4abc2275005a463dbd59853f718efe0fb254d1ac11701f3444c728282518e734"
         ),
-        // Aún no publicado: el próximo release de CircleCI completa url y checksum.
         .binaryTarget(
             name: "TelematicsProvider",
             url: "https://mobility-sdk.jooycar.net/ios/TelematicsProvider-1.2.0.xcframework.zip",
-            checksum: "0000000000000000000000000000000000000000000000000000000000000000"
+            checksum: "4f56bb8b79dc5296aed1c487a92a12d7e5a2163b5bacb10e4fc09221005bf956"
         ),
         .target(
             name: "JooycarMobilitySDKDependencyWrapper",
