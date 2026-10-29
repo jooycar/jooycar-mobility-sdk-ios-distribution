@@ -33,6 +33,60 @@ Ir a:
  
 4. Escoger la version deseada 
 
+5. Marcar `JooycarMobilitySDK` y **un** proveedor de telemática:
+
+| Producto | Proveedor | Dependencias |
+|---|---|---|
+| `OctoProvider` | Octo | DriveKit (registry privado de Octo) |
+| `TelematicsProvider` | Jooycar | JooycarTelematics, desde `jooycar-telematics-sdk-ios-distribution` |
+
+Requisitos: **iOS 15** y **Xcode 27 (Swift 6.4)**, para cualquiera de los dos proveedores. SwiftPM resuelve las dependencias de ambos, pero solo enlaza las del producto elegido.
+
+O en el `Package.swift` de tu app:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/jooycar/jooycar-mobility-sdk-ios-distribution.git", from: "1.2.0")
+],
+targets: [
+    .target(
+        name: "MiApp",
+        dependencies: [
+            .product(name: "JooycarMobilitySDK", package: "jooycar-mobility-sdk-ios-distribution"),
+            // Un solo proveedor: OctoProvider o TelematicsProvider.
+            .product(name: "OctoProvider", package: "jooycar-mobility-sdk-ios-distribution")
+        ]
+    )
+]
+```
+
+El SDK detecta el proveedor enlazado al llamar a `initialize(config:)`; no hace falta importarlo. Sin proveedor, `initialize` y `start()` devuelven `TELEMATICS_NOT_CONFIGURED`; con los dos, `INITIALIZATION_FAILED`.
+
+Desde 1.2.0 el core ya no incluye DriveKit: las apps que usaban Octo deben agregar el producto `OctoProvider`.
+
+### Con `TelematicsProvider`
+
+- Llamar a `initialize(config:)` en `application(_:didFinishLaunchingWithOptions:)`, sin envolverlo en un `Task`: JooycarTelematics registra sus tareas de background, que `BGTaskScheduler` solo acepta durante el launch. El resultado se espera con `await JooycarMobility.initialize(config: config).value`.
+- Reenviar el hook de `URLSession` en background; sin esto los uploads quedan colgados:
+
+```swift
+func application(
+    _ application: UIApplication,
+    handleEventsForBackgroundURLSession identifier: String,
+    completionHandler: @escaping () -> Void
+) {
+    nonisolated(unsafe) let handler = completionHandler
+    let handled = JooycarMobility.handleEventsForBackgroundURLSession(identifier: identifier) {
+        handler()
+    }
+    if !handled {
+        // La sesión no es del SDK: manejarla en la app.
+    }
+}
+```
+
+- Declarar en `Info.plist` `UIBackgroundModes` (`location`, `fetch`, `processing`) y `BGTaskSchedulerPermittedIdentifiers` (`com.jooycar.telematics.upload`, `com.jooycar.telematics.refresh`), y habilitar el entitlement de App Attest. Si falta algo, `start()` devuelve `HOST_MISCONFIGURED`.
+
 ## Flujo uso recomendado
 
 ### 1. Inicializar SDK
