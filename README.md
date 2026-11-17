@@ -61,7 +61,7 @@ En el `Package.swift` de tu app:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jooycar/jooycar-mobility-sdk-ios-distribution.git", from: "1.2.2")
+    .package(url: "https://github.com/jooycar/jooycar-mobility-sdk-ios-distribution.git", from: "1.2.3-push1")
 ],
 targets: [
     .target(
@@ -89,7 +89,7 @@ codesign -dv --verbose=4 JooycarMobilitySDK.xcframework
 #    TeamIdentifier=4EA35D7A4S
 ```
 
-El procedimiento completo —firma, manifiesto, SBOM y sus limitaciones— está en [docs/verificacion-de-artefactos.md](https://github.com/jooycar/jooycar-mobility-sdk-ios/blob/release-1.2.2/docs/verificacion-de-artefactos.md). Nada de esto es necesario para integrar el SDK: SwiftPM ya valida el checksum en cada resolución.
+El procedimiento completo —firma, manifiesto, SBOM y sus limitaciones— está en [docs/verificacion-de-artefactos.md](https://github.com/jooycar/jooycar-mobility-sdk-ios/blob/release-1.2.3-push1/docs/verificacion-de-artefactos.md). Nada de esto es necesario para integrar el SDK: SwiftPM ya valida el checksum en cada resolución.
 
 ### 4. Configurar `Info.plist`
 
@@ -306,6 +306,79 @@ JooycarMobility.configureAnalytics(
 - Mientras `analyticsEnabled` sea `false` (el valor inicial), Amplitude **nunca se instancia** (sin red, sin autocapture). Si se habilita después, la instancia se crea en ese momento.
 - Con `sessionReplayEnabled: true`, el porcentaje real de sesiones grabadas lo define el Sampling Rate del dashboard de Amplitude (*Settings → Projects → [proyecto] → Session Replay*). El flag local es un interruptor por encima de eso: en `false` no se graba ninguna sesión, sin importar el dashboard.
 - El interruptor cubre los dos destinos de analítica del SDK: los eventos de Amplitude (`ONB_REG_*`, `SDK_WEBVIEW_*`, autocapture) y los logs de onboarding que van al backend de Jooycar (`POST /v1/logs`, los `ONB_*` del flujo de permisos).
+
+## Push notifications
+
+El SDK registra el dispositivo del usuario para recibir los push del journey y resuelve a qué pantalla lleva cada uno. **La app host es dueña de todo lo nativo de push**: la capability, la llave APNs, el permiso de notificaciones, el token del sistema y el toque de la notificación (un framework no puede llevar entitlements ni recibir el token por su cuenta).
+
+Es opt-in: si la app nunca llama a estos métodos, el SDK se comporta igual que antes (por ejemplo, partners con API de push propia).
+
+### Qué hace el host
+
+1. **Capability y llave APNs.** En el target de la app, agregar *Push Notifications* (entitlement `aps-environment`: `development` o `production` según cómo se firme el build). La llave APNs (.p8) o el certificado del App ID se entregan a backend para crear la platform application de SNS que corresponda: **APNS_SANDBOX** para builds firmados en desarrollo y **APNS** para TestFlight y tienda. Indicar a backend cómo se firma el build de QA.
+2. **Pedir el permiso de notificaciones y registrarse en APNs.** El SDK **no** pide el permiso ni llama a `registerForRemoteNotifications()`: es decisión de la app cuándo hacerlo. Si el usuario no lo concede, no hay token y no se registra nada; el journey sigue normal.
+
+```swift
+let granted = try? await UNUserNotificationCenter.current()
+    .requestAuthorization(options: [.alert, .badge, .sound])
+if granted == true {
+    await MainActor.run { UIApplication.shared.registerForRemoteNotifications() }
+}
+```
+
+3. **Reenviar el token APNs** en cada arranque y cuando cambie (iOS lo entrega en `didRegisterForRemoteNotificationsWithDeviceToken` cada vez que se registra):
+
+```swift
+func application(_ application: UIApplication,
+                 didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    Task { await JooycarMobility.registerPushToken(deviceToken) }
+}
+```
+
+   Debe ser el token **APNs** crudo (el SDK lo convierte a hexadecimal), no el token de FCM: las platform applications de iOS son APNS/APNS_SANDBOX. Si la app usa Firebase Messaging, pasar el `deviceToken` de APNs y no `fcmToken`. Se puede llamar antes del login: el SDK guarda el token y lo registra al iniciar sesión.
+
+4. **Reenviar el toque** (y mostrar el banner con la app en primer plano). Asignar `UNUserNotificationCenter.current().delegate` al arrancar, antes de que termine el lanzamiento, para no perder el toque con la app cerrada:
+
+```swift
+func userNotificationCenter(_ center: UNUserNotificationCenter,
+                            willPresent notification: UNNotification,
+                            withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    completionHandler([.banner, .sound])
+}
+
+func userNotificationCenter(_ center: UNUserNotificationCenter,
+                            didReceive response: UNNotificationResponse,
+                            withCompletionHandler completionHandler: @escaping () -> Void) {
+    let destination = JooycarMobility.handlePushPayload(response.notification.request.content.userInfo)
+    Task { @MainActor in JooycarMobility.openPushDestination(destination) }   // con el SDK inicializado y con sesión
+    completionHandler()
+}
+```
+
+5. **Para `tbyb://permissions`,** el host debe haber configurado `PermissionFlowViewController.configProvider`, igual que para su flujo de permisos habitual.
+6. **No registrar `tbyb://` como URL scheme.** Es solo texto dentro del payload.
+
+### Qué hace el SDK
+
+- `registerPushToken(_:)` (`Data` o `String` en hexadecimal) llama a `POST /v1/pushNotifications/userContactPoints` con la sesión del usuario (mismo transporte que el resto del SDK: Bearer y refresh ante un 401). El body lleva exactamente `type` (`mobile`), `uid` (UUID de instalación persistido), `devModel`, `os` (`ios`), `osV`, `res` (`<ancho>x<alto>` en puntos), `appV` (versión de la app host), `pushV` (`1`) y `notifToken`.
+- **Sin sesión**, el token queda guardado y se registra al terminar `login`. **Con sesión**, se registra de inmediato.
+- **Cada `login` vuelve a enviar el token guardado.** El endpoint es idempotente y deja un solo dispositivo activo por usuario, así que un teléfono desplazado por otro se reactiva al iniciar sesión. Solo se coalescen las llamadas simultáneas del mismo usuario + token.
+- **Una falla del endpoint nunca interrumpe la experiencia ni el login.** `registerPushToken` devuelve `.failure` solo como información. Un 401 se refresca una vez; un 5xx o una falla de red dejan el token pendiente para el próximo login o cambio de token; un 400 (body inválido) se registra en el log y no se reintenta con el mismo usuario + token.
+- `handlePushPayload(_:)` lee `deepLink` (dentro de `data`, o en la raíz del `userInfo`) y devuelve un `JooycarPushDestination`:
+
+| `data.deepLink` | Destino | Pantalla |
+| --- | --- | --- |
+| `tbyb://evaluation-home` | `.evaluationHome` | WebView TBYB en su entrada normal |
+| `tbyb://permissions` | `.permissions` | Flow nativo de permisos del SDK |
+| ausente o cualquier otro valor | `.evaluationHome` | Igual que el primero |
+
+- `openPushDestination(_:from:)` abre ese destino. Si faltan el `configProvider` o un controlador desde el cual presentar, deja un log y abre el home de evaluación.
+
+### Limitaciones actuales
+
+- Solo hay dos destinos. Los destinos dentro del WebView (ayuda de permisos, registro de vehículo, detalle del plan, resumen de contratación) quedan fuera del piloto: caen en el home de evaluación.
+- No incluye baja del contact point al cerrar sesión o al revocar el permiso, ni inbox ni preferencias por tipo de notificación.
+- `data.pushMessageId` llega en el payload pero el SDK todavía no lo usa.
 
 ## Formato de resultados
 
