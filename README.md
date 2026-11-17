@@ -61,7 +61,7 @@ En el `Package.swift` de tu app:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/jooycar/jooycar-mobility-sdk-ios-distribution.git", from: "1.2.2")
+    .package(url: "https://github.com/jooycar/jooycar-mobility-sdk-ios-distribution.git", from: "1.2.3")
 ],
 targets: [
     .target(
@@ -89,7 +89,7 @@ codesign -dv --verbose=4 JooycarMobilitySDK.xcframework
 #    TeamIdentifier=4EA35D7A4S
 ```
 
-El procedimiento completo —firma, manifiesto, SBOM y sus limitaciones— está en [docs/verificacion-de-artefactos.md](https://github.com/jooycar/jooycar-mobility-sdk-ios/blob/release-1.2.2/docs/verificacion-de-artefactos.md). Nada de esto es necesario para integrar el SDK: SwiftPM ya valida el checksum en cada resolución.
+El procedimiento completo —firma, manifiesto, SBOM y sus limitaciones— está en [docs/verificacion-de-artefactos.md](https://github.com/jooycar/jooycar-mobility-sdk-ios/blob/release-1.2.3/docs/verificacion-de-artefactos.md). Nada de esto es necesario para integrar el SDK: SwiftPM ya valida el checksum en cada resolución.
 
 ### 4. Configurar `Info.plist`
 
@@ -234,8 +234,8 @@ No hay que llamar nada extra: `initialize(config:)` detecta el producto enlazado
   - `credentials: LoginData` con `token`, `person`, `vehicle`, `address`.
   - `person`, `vehicle` y `address` son opcionales (default `nil`).
 - **Retorno:** `MobilityResult`:
-  - `success`: autenticación OK.
-  - `failure` específico: `INVALID_CREDENTIALS`.
+  - `success`: autenticación OK y dispositivo asociado al proveedor de telemática.
+  - `failure` específico: `INVALID_CREDENTIALS`, `TELEMATICS_NOT_CONFIGURED`, o el error del enrolamiento (p. ej. `NETWORK_ERROR`).
 
 ### `start()`
 
