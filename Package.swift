@@ -38,18 +38,18 @@ let package = Package(
         // CircleCI actualiza url y checksum de cada binaryTarget en cada release.
         .binaryTarget(
             name: "JooycarMobilitySDK",
-            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.2.3.xcframework.zip",
-            checksum: "1e943fdacf79c441fb1afffb5e5dfb79964d2c0397cd7d6d2c562c0afcd67911"
+            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.2.3-push3.xcframework.zip",
+            checksum: "7da8e7565c227bb269f97c60802592312bce3ae1739d58117f024c32001df7a6"
         ),
         .binaryTarget(
             name: "OctoProvider",
-            url: "https://mobility-sdk.jooycar.net/ios/OctoProvider-1.2.3.xcframework.zip",
-            checksum: "13f30d667e4982ff69772d659c8ec6ebe4488223439c687567641359b69a22f2"
+            url: "https://mobility-sdk.jooycar.net/ios/OctoProvider-1.2.3-push3.xcframework.zip",
+            checksum: "c605f75136e7976ec1c76f013818141c61510212a22e92f9ca67c62987638b3d"
         ),
         .binaryTarget(
             name: "TelematicsProvider",
-            url: "https://mobility-sdk.jooycar.net/ios/TelematicsProvider-1.2.3.xcframework.zip",
-            checksum: "aa233227432ed963a63c4005c007a69dcb8b3b98e832b91ffca7d2e0629d212f"
+            url: "https://mobility-sdk.jooycar.net/ios/TelematicsProvider-1.2.3-push3.xcframework.zip",
+            checksum: "ac435c2474d544d250dfa577076b27b5ba1342bef840ce3d8ce46ca6d76935e5"
         ),
         .target(
             name: "JooycarMobilitySDKDependencyWrapper",
