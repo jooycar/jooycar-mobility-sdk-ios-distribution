@@ -25,7 +25,7 @@ let package = Package(
     ],
     dependencies: [
         .package(id: "drivekit.spm", exact: "3.9.4"),
-        .package(url: "https://github.com/jooycar/jooycar-telematics-sdk-ios-distribution.git", exact: "0.3.1-dev"),
+        .package(url: "https://github.com/jooycar/jooycar-telematics-sdk-ios-distribution.git", exact: "0.3.2-dev"),
         .package(url: "https://github.com/amplitude/Amplitude-Swift.git", exact: "1.18.5"),
         .package(url: "https://github.com/amplitude/AmplitudeSessionReplay-iOS.git", exact: "0.16.0"),
         .package(url: "https://github.com/amplitude/analytics-connector-ios.git", exact: "1.3.0"),
@@ -38,18 +38,18 @@ let package = Package(
         // CircleCI actualiza url y checksum de cada binaryTarget en cada release.
         .binaryTarget(
             name: "JooycarMobilitySDK",
-            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.2.3.xcframework.zip",
-            checksum: "1e943fdacf79c441fb1afffb5e5dfb79964d2c0397cd7d6d2c562c0afcd67911"
+            url: "https://mobility-sdk.jooycar.net/ios/JooycarMobilitySDK-1.2.3-dev-jooycar.xcframework.zip",
+            checksum: "f0142ab01aaea905d30ba173baac3b9ccd97f64c9f5eae8fed254b051f0f8a94"
         ),
         .binaryTarget(
             name: "OctoProvider",
-            url: "https://mobility-sdk.jooycar.net/ios/OctoProvider-1.2.3.xcframework.zip",
-            checksum: "13f30d667e4982ff69772d659c8ec6ebe4488223439c687567641359b69a22f2"
+            url: "https://mobility-sdk.jooycar.net/ios/OctoProvider-1.2.3-dev-jooycar.xcframework.zip",
+            checksum: "7586d741a3203ff44120f685bc1a43fd8462778efbcb41f31f13088f86125dc5"
         ),
         .binaryTarget(
             name: "TelematicsProvider",
-            url: "https://mobility-sdk.jooycar.net/ios/TelematicsProvider-1.2.3.xcframework.zip",
-            checksum: "aa233227432ed963a63c4005c007a69dcb8b3b98e832b91ffca7d2e0629d212f"
+            url: "https://mobility-sdk.jooycar.net/ios/TelematicsProvider-1.2.3-dev-jooycar.xcframework.zip",
+            checksum: "e922b048d3df3c69f6a66237bc42fa3fe296c5b5875638cedb4c3ab35d4fc889"
         ),
         .target(
             name: "JooycarMobilitySDKDependencyWrapper",
